@@ -1,0 +1,73 @@
+#include<NewPing.h>
+
+//Define Pins
+#define PIR_PIN 8
+#define IR_PIN 13
+#define LDR_PIN A0
+#define LED_PIN 7
+
+//define ultrasonic sensor parameters
+#define TRIGGER_PIN 10
+#define ECHO_PIN 9
+#define MAX_DISTANCE 200
+
+//initalize ultrasonic sensor
+NewPing sonar(TRIGGER_PIN,ECHO_PIN,MAX_DISTANCE);
+
+void setup() {
+//initialize serial moniter
+Serial.begin(9600);
+
+//set pin modes
+pinMode(PIR_PIN, INPUT);
+pinMode(IR_PIN, INPUT);
+pinMode(LDR_PIN, INPUT);
+pinMode(LED_PIN, OUTPUT);
+analogWrite(LED_PIN,25);
+}
+
+void loop() {
+//read PIR sensor
+int pirValue=digitalRead(PIR_PIN);
+
+//read IR sensor
+int ir value=digitalRead(IR_PIN);
+
+//read LDR sensor
+//int ldrValue=analogRead(LDR_PIN)
+//Read Ultrasonic Sensor
+delay(50);
+int distance=sonar.ping_cm();
+
+//check for any obstacle in front
+if (distance>0 && distance<=50) {
+ if (pirValue==HIGH) {
+//if IR sensor is high,object detected
+ if (irValue==HIGH) {
+//Adjust brightness based on LDR value
+//if(ldr Value<200) {
+//Adjust LED brightness based on LDR value
+  //int ledBrightness=map(ldrValue,0,1023,0,255);
+   analogWrite(LED_PIN,100);//ledBrightness);
+    //}
+   }
+  }
+}
+else {
+ //if no obstacle is detected,turn off the LED
+   digitakWrite(LED_PIN,LOW);
+  }
+  //Print values for debugging
+  Serial.print("PIR Value:");
+  Serial.print(pirValue);
+  Serial.print("-IR Value:");
+  Serial.print(irValue);
+  Serial.print("-LDR Value:");
+  //Serial.print(ldrValue);
+  Serial.print("-Distance:");
+  Serial.print(distance);
+
+  //delay before next loop
+   delay(500);
+
+  
